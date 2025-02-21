@@ -14,24 +14,18 @@ struct FrameworkGridView: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                LazyVGrid(columns: viewModel.columns) {
-                    // ForEach(MockData.frameworks, id: \.self) if not conforming to identifiable
-                    ForEach(MockData.frameworks) { framework in
+            List {
+                // ForEach(MockData.frameworks, id: \.self) if not conforming to identifiable
+                ForEach(MockData.frameworks) { framework in
+                    NavigationLink(destination: FrameworkDetailView(framework: framework, isShowingDetailView: $viewModel.isShowingDetailView)) {
                         FrameworkTitleView(framework: framework)
-                            .onTapGesture {
-                                // Update model
-                                viewModel.selectedFramework = framework
-                            }
                     }
+                    .listRowBackground(Color.clear)
                 }
             }
-            .navigationTitle("Apple Frameworks")
-            // Make binding with $
-            .sheet(isPresented: $viewModel.isShowingDetailView) {
-                FrameworkDetailView(framework: viewModel.selectedFramework ?? MockData.sampleFramework, isShowingDetailView: $viewModel.isShowingDetailView)
-            }
+            .navigationTitle("🍎 Frameworks")
         }
+        .accentColor(Color(.label))
     }
 }
 
